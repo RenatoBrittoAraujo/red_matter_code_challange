@@ -88,7 +88,7 @@ const drawPlot2 = (ctx, frameCount) => {
   }
 }
 
-function Challange1() {
+function Challange3() {
   const classes = useStyles();
   return (
     <div className={classes.header}>
@@ -109,4 +109,4 @@ function Challange1() {
   );
 }
 
-export default Challange1;
+export default Challange3;
