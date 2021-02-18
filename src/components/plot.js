@@ -46,33 +46,33 @@ export const graphLine = (ctx, params) => {
         let interval = Math.max(y1, y2) - Math.min(y1, y2)
         interval /= 10
         for (let y = Math.min(y1, y2); y < Math.max(y1, y2); y += interval) {
-        line(ctx, x1 - 7, y, x1 + 7, y)
-        let text_write = ((Math.abs(ib - ie) / 10) * counter).toString()
-        if (text_write.length > 6) text_write = text_write.substring(0, 6)
-        text(ctx, {
-            font: "Arial black 30px",
-            style: "black",
-            text: text_write,
-            x: x1 - 45,
-            y: y + 4
-        })
-        counter--
+            line(ctx, x1 - 7, y, x1 + 7, y)
+            let text_write = ((Math.abs(ib - ie) / 10) * counter).toString()
+            if (text_write.length > 6) text_write = text_write.substring(0, 6)
+            text(ctx, {
+                font: "Arial black 30px",
+                style: "black",
+                text: text_write,
+                x: x1 - 45,
+                y: y + 4
+            })
+            counter--
         }
     } else if (y1 === y2) {
         let interval = Math.max(x1, x2) - Math.min(x1, x2)
         interval /= 10
         for (let x = Math.max(x1, x2); x > Math.min(x1, x2); x -= interval) {
-        line(ctx, x, y1 - 7, x, y1 + 7)
-        let text_write = ((Math.abs(ib - ie) / 10) * counter).toString()
-        if (text_write.length > 6) text_write = text_write.substring(0, 6)
-        text(ctx, {
-            font: "Arial black 30px",
-            style: "black",
-            text: text_write,
-            x: x - 12,
-            y: y1 + 20
-        })
-        counter--
+            line(ctx, x, y1 - 7, x, y1 + 7)
+            let text_write = ((Math.abs(ib - ie) / 10) * counter).toString()
+            if (text_write.length > 6) text_write = text_write.substring(0, 6)
+            text(ctx, {
+                font: "Arial black 30px",
+                style: "black",
+                text: text_write,
+                x: x - 12,
+                y: y1 + 20
+            })
+            counter--
         }
     } else {
         throw new Error("Plot line is not vertical nor horizontal")
