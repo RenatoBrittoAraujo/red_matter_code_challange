@@ -92,7 +92,7 @@ function Challange1() {
   const classes = useStyles();
   return (
     <div className={classes.header}>
-      <h1 className={classes.title}>Challange 1</h1>
+      <h1 className={classes.title}>Challange 3</h1>
       <Canvas
         draw={drawPlot1}
         style={{
