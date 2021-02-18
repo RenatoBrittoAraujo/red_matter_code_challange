@@ -79,6 +79,22 @@ export const graphLine = (ctx, params) => {
     }
 }
 
+const _canvasWidth = (params) => {
+    return Math.max(params.y1, params.y2) - Math.min(params.y1, params.y2)
+}
+const _canvasHeight = (params) => {
+    return Math.max(params.y1, params.y2) - Math.min(params.y1, params.y2)
+}
+
+const _convertToCanvasPoint = (x, y, params) => {
+    const w = _canvasWidth(params)
+    const h = _canvasHeight(params)
+    return [
+        (x / (params.iex - params.ibx)) * w + Math.min(params.x1, params.x2),
+        (((params.iey - params.iby) - y) / (params.iey - params.iby)) * h + Math.min(params.y1, params.y2)
+    ]
+}
+
 export const createPlotGraph = (ctx, params) => {
     const { x1, x2, y1, y2, ibx, iex, iby, iey } = params
     ctx.strokeStyle = '#000'
@@ -119,14 +135,25 @@ export const createPlotGraph = (ctx, params) => {
         return {
             addPoint: (x, y, color='#888') => {
                 if (x < params.ibx || x > params.iex)
-                return
+                    return
                 if (y < params.iby || y > params.iey)
-                return
-                const w = Math.max(params.y1, params.y2) - Math.min(params.y1, params.y2)
-                const h = Math.max(params.y1, params.y2) - Math.min(params.y1, params.y2)
-                const plotx = (x / (params.iex - params.ibx)) * w + Math.min(params.x1, params.x2)
-                const ploty = (((params.iey - params.iby) - y) / (params.iey - params.iby)) * h + Math.min(params.y1, params.y2)
+                    return
+                const plotPoints = _convertToCanvasPoint(x, y, params)
+                const plotx = plotPoints[0]
+                const ploty = plotPoints[1]
                 circle(ctx, plotx, ploty, 3, color)
+            },
+            addPolygon: (polygon, color) => {
+                const oldstyle = ctx.strokeStyle
+                ctx.strokeStyle = color
+                const pl = polygon.length
+                for (let i = 0; i < pl; i++) {
+                    const a = _convertToCanvasPoint(polygon[i][0], polygon[i][1], params)
+                    const b = _convertToCanvasPoint(polygon[(i + 1) % pl][0], polygon[(i + 1) % pl][1], params)
+                    console.log('hahaha', a[1])
+                    line(ctx, a[0], a[1], b[0], b[1])
+                }
+                ctx.strokeStyle = oldstyle
             }
         }
     })(ctx, params)

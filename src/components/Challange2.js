@@ -13,6 +13,7 @@ import { insideOrEdgePolygon } from './geometry'
 
 const data = [
   [ 198619, 182327, 96947, 196635],
+  [ 200000, 200000, 1,1 ],
   [ 190812, 198648, 90738, 190065],
   [ 185989, 195751, 98451, 186084],
   [ 183427, 187377, 81139, 194941],
@@ -61,6 +62,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const color_coded_points = data
+
+const paintPoints = () => {
+  for (let i in color_coded_points) {
+    const point = color_coded_points[i]
+    const x = point[0]
+    const y = point[1]
+    if (insideOrEdgePolygon(x, y, polygon)) {
+      color_coded_points[i] = [x, y, 'red']
+    } else {
+      color_coded_points[i] = [x, y, 'black']
+    }
+  }
+}
+
 const draw = (ctx, frameCount) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   ctx.fillStyle = '#ff0000'
@@ -76,28 +92,19 @@ const draw = (ctx, frameCount) => {
     iey: 250000
   })
 
-  const color_coded_points = data
-
-  for (let point of color_coded_points) {
-    const x = point[0]
-    const y = point[1]
-    if (insideOrEdgePolygon(x, y, polygon)) {
-      point = [x, y, 'red']
-    } else {
-      point = [x, y, 'black']
-    }
-  }
-
-  for (const point of data) {
+  for (const point of color_coded_points) {
     const x = point[0]
     const y = point[1]
     const color = point[2]
     plot.addPoint(x, y, color)
   }
+
+  plot.addPolygon(polygon, 'blue')
 }
 
 function Challange2() {
   const classes = useStyles();
+  paintPoints()
   return (
     <div className={classes.header}>
       <h1 className={classes.title}>Challange 2</h1>
