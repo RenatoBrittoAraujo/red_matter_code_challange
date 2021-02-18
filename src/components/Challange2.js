@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Canvas from './Canvas'
 import { createPlotGraph } from './plot';
-import { insideOrEdgePolygon } from './geometry'
+import { raycastPointInsidePolygon, segmentIntersection } from './geometry'
 
 /*
   About the challange:
@@ -13,7 +13,6 @@ import { insideOrEdgePolygon } from './geometry'
 
 const data = [
   [ 198619, 182327, 96947, 196635],
-  [ 200000, 200000, 1,1 ],
   [ 190812, 198648, 90738, 190065],
   [ 185989, 195751, 98451, 186084],
   [ 183427, 187377, 81139, 194941],
@@ -69,7 +68,7 @@ const paintPoints = () => {
     const point = color_coded_points[i]
     const x = point[0]
     const y = point[1]
-    if (insideOrEdgePolygon(x, y, polygon)) {
+    if (raycastPointInsidePolygon(x, y, polygon)) {
       color_coded_points[i] = [x, y, 'red']
     } else {
       color_coded_points[i] = [x, y, 'black']

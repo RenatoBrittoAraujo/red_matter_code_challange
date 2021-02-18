@@ -79,16 +79,16 @@ export const graphLine = (ctx, params) => {
     }
 }
 
-const _canvasWidth = (params) => {
+const plotCanvasWidth = (params) => {
     return Math.max(params.y1, params.y2) - Math.min(params.y1, params.y2)
 }
-const _canvasHeight = (params) => {
+const plotCanvasHeight = (params) => {
     return Math.max(params.y1, params.y2) - Math.min(params.y1, params.y2)
 }
 
-const _convertToCanvasPoint = (x, y, params) => {
-    const w = _canvasWidth(params)
-    const h = _canvasHeight(params)
+const convertToPlotCanvasPoint = (x, y, params) => {
+    const w = plotCanvasWidth(params)
+    const h = plotCanvasHeight(params)
     return [
         (x / (params.iex - params.ibx)) * w + Math.min(params.x1, params.x2),
         (((params.iey - params.iby) - y) / (params.iey - params.iby)) * h + Math.min(params.y1, params.y2)
@@ -138,22 +138,25 @@ export const createPlotGraph = (ctx, params) => {
                     return
                 if (y < params.iby || y > params.iey)
                     return
-                const plotPoints = _convertToCanvasPoint(x, y, params)
+                const plotPoints = convertToPlotCanvasPoint(x, y, params)
                 const plotx = plotPoints[0]
                 const ploty = plotPoints[1]
                 circle(ctx, plotx, ploty, 3, color)
             },
-            addPolygon: (polygon, color) => {
-                const oldstyle = ctx.strokeStyle
+            addPolygon: (polygon, color='#00d') => {
                 ctx.strokeStyle = color
                 const pl = polygon.length
                 for (let i = 0; i < pl; i++) {
-                    const a = _convertToCanvasPoint(polygon[i][0], polygon[i][1], params)
-                    const b = _convertToCanvasPoint(polygon[(i + 1) % pl][0], polygon[(i + 1) % pl][1], params)
-                    console.log('hahaha', a[1])
+                    const a = convertToPlotCanvasPoint(polygon[i][0], polygon[i][1], params)
+                    const b = convertToPlotCanvasPoint(polygon[(i + 1) % pl][0], polygon[(i + 1) % pl][1], params)
                     line(ctx, a[0], a[1], b[0], b[1])
                 }
-                ctx.strokeStyle = oldstyle
+            },
+            addLine: (pa, pb, color='#0d0') => {
+                ctx.strokeStyle = color
+                const a = convertToPlotCanvasPoint(pa[0], pa[1], params)
+                const b = convertToPlotCanvasPoint(pb[0], pb[1], params)
+                line(ctx, a[0], a[1], b[0], b[1])
             }
         }
     })(ctx, params)
