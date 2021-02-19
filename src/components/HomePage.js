@@ -33,13 +33,6 @@ function HomePage() {
     <div>
       <div className={classes.header}>
         <h1 className={classes.title}>Welcome to my submission</h1>
-        <p className={classes.subtitle}>
-          Click on the links below to go to each challange,
-          <br/>
-          <a href="https://docs.google.com/document/d/1hnVNLmUS2TiQBf7j8fGK1gwb7YgGkFfgqOpyNZFMM-c/edit?ts=602c2855">
-            as requested here
-          </a>
-        </p>
       </div>
       <div className={classes.content}>
         <Link className={classes.toolbarlink} 
